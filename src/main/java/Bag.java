@@ -5,6 +5,9 @@
  * 1. Introduction to Java helpful.
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public abstract class Bag {
     /*
      * TODO: Create the following private instance variables
@@ -73,18 +76,15 @@ public abstract class Bag {
      */
     public boolean addItem (String item) {
         if (this.getNumberOfContents() < this.getCapacity()) {
-            if (this.contents.length == 0){
-                this.contents[0] = item;
-            } else {
-                this.contents[this.contents.length] = item;
-            }
-            this.numberOfContents = this.numberOfContents + 1;
+            ArrayList<String> contentsList = new ArrayList<>(Arrays.asList(this.contents));
+            contentsList.add(item);
+            this.numberOfContents = this.getNumberOfContents() + 1;
+            this.contents = contentsList.toArray(new String[contentsList.size()]);
             return true;
         } else {
             return false;
         }
     }
-
 
     /**
      * TODO: Create a method called popItem that returns a String.
@@ -97,16 +97,16 @@ public abstract class Bag {
      * @return
      */
     public String popItem(){
-        String temp = this.contents[this.contents.length - 1];
-        String[] newArray = new String[] {};
-        for(int i = 0; i < this.contents.length; i++){
-            newArray[i] = this.contents[i];
+        if(this.numberOfContents == 0){
+            return null;
+        } else {
+            ArrayList<String> contentsList = new ArrayList<>(Arrays.asList(this.contents));
+            String temp = this.contents[this.getNumberOfContents() - 1];
+            contentsList.remove(this.getNumberOfContents() -1);
+            this.numberOfContents = this.getNumberOfContents() - 1;
+            this.contents = contentsList.toArray(new String[contentsList.size()]);
+            return temp;
         }
-        for(int k = 0; k < newArray.length - 1; k++){
-            this.contents[k] = newArray[k];
-        }
-        this.numberOfContents = this.numberOfContents - 1;
-        return temp;
     }
 
     /**
